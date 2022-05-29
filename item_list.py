@@ -61,3 +61,10 @@ for x in keys:
     _item_list.append(x)
 for x in weapons:
     _item_list.append(x)
+
+def get_item(item_name):
+    for x in _item_list:
+        print("searching")
+        if x.name==item_name:
+            return x
+    return None

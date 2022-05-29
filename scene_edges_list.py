@@ -1,5 +1,5 @@
 from scene import SceneEdge
-from item_list import _item_list
+from item_list import get_item
 # hidden checks
 def sword_check(player=None):
     return not player.search_inventory("sword")
@@ -26,11 +26,7 @@ def edge2fn(player=None):
         print("you find a sword: do you take it?")
         opt = input("yes / no ? : ")
         if(opt == "y" or opt=="yes"):
-            sword = None;
-            for x in _item_list:
-                if x.name=="sword":
-                    sword=x;
-                    break
+            sword = get_item("sword")
             player.add_to_inventory(sword)
         print("you get up and get to your front door")
 
