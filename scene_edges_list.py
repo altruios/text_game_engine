@@ -26,8 +26,12 @@ def edge2fn(player=None):
         print("you find a sword: do you take it?")
         opt = input("yes / no ? : ")
         if(opt == "y" or opt=="yes"):
-            item_index = _item_list.index("sword")
-            player.add_to_inventory(_item_list[item_index])
+            sword = None;
+            for x in _item_list:
+                if x.name=="sword":
+                    sword=x;
+                    break
+            player.add_to_inventory(sword)
         print("you get up and get to your front door")
 
 def e2hifn(player=None):

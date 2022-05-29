@@ -46,4 +46,10 @@ class Player:
             if x.name == item_name:
                 return x
     def display(self):
-       print(vars(self))
+        v = vars(self)
+        v = [{x,y} for (x,y) in v.items() if not x =="inventory"]
+        print(v)
+        print("inventory:")
+        for x in self.inventory:
+           print(x.name)
+        print("\n\n")

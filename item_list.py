@@ -59,3 +59,5 @@ for x in items:
     _item_list.append(x)
 for x in keys:
     _item_list.append(x)
+for x in weapons:
+    _item_list.append(x)
