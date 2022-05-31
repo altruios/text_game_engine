@@ -7,19 +7,19 @@ def sword_check(player=None):
 
 
 # walk functions - what happens when you walk a path
-def edge0fn(player=None):
-    print("you wake up - only remembering the things you learned before")
+def edge0fn(player=None,display=None):
+    display=display+"you wake up - only remembering the things you learned before\n"
     player.health=100;
     player.respawn=player.respawn+1;
 
 
-def edge1fn(player=None,swung_sword=False):
+def edge1fn(player=None,swung_sword=False,display=None):
     if not swung_sword:
-        print("you run and stumble on the ground, the dog chases you")
+        display=display+"you run and stumble on the ground, the dog chases you"
         player.health=player.health-50;
 
-def edge2fn(player=None):
-    print("you walk down the street and the dog loses interest in you")
+def edge2fn(player=None,display=None):
+    display=display+"you walk down the street and the dog loses interest in you"
     if(sword_check(player)):
         print("you stumble on the ground")
         player.health=player.health-10
@@ -28,13 +28,15 @@ def edge2fn(player=None):
         if(opt == "y" or opt=="yes"):
             sword = get_item("sword")
             player.add_to_inventory(sword)
-        print("you get up and get to your front door")
+        display=display+"you get up and get to your front door\n"
+    else:
+        display=display+"you get up and get to your front door\n"
 
-def e2hifn(player=None):
+def e2hifn(player=None,display=None):
     if player:
         return player.respawn==0;
     return True
-def edge3fn(player=None):
+def edge3fn(player=None,display=None):
     if player:
         player.use("sword")
         print("the dog was killed")

@@ -1,4 +1,5 @@
 import os
+import sys
 clear = lambda: os.system("clear")
 class SceneNode:
     def __init__(self,text,id):
@@ -16,11 +17,11 @@ class SceneEdge:
         if not self.hidden_function:
             return False;
         return self.hidden_function(player);
-    def travel(self,player):
+    def travel(self,player,display=None):
         if(self.travel_function):
-            self.travel_function(player)
+            self.travel_function(player,display=display)
         else:
-            print("\n\n**\n\n")
+            display=display+"\n\n**\n\n"
 class SceneGraph:
     def __init__(self):
         self.root=None;
@@ -28,6 +29,8 @@ class SceneGraph:
         self.edges=[]
         self.visible_node=None;
         self.visible_edges=[]
+        self.displays=["",""]
+        self.display_width=100
     def add(self, node=None,edge=None):
         if node:
             self.nodes.append(node)
@@ -45,11 +48,11 @@ class SceneGraph:
         except:
             vnid = 0
         try:
-            self.visible_edges[option].travel(player)
+            self.visible_edges[option].travel(player,display=self.displays[1])
         except:
             #there are no possible answers:
             self.visible_edges.append(self.edges[0])
-            self.visible_edges[0].travel(player)
+            self.visible_edges[0].travel(player,display=self.displays[1])
         self.set_visible_node(vnid)
         self.set_visible_edges(player)
     def set_visible_node(self,id):
@@ -58,22 +61,60 @@ class SceneGraph:
                 self.visible_node=x
                 break
     def display(self):
-        print(self.visible_node.text);
+        s="";
+        s=s+(self.visible_node.text);
         for i,x in enumerate(self.visible_edges):
-            print(f'{i}: {x.text}')
+            s=s+(f'\n{i}: {x.text}')
+        return s
     def play(self,player):
-        player.display()
-        self.display()
+        self.clear_output(every=True)
+        self.output(0,player.display(self.display_width))
+        self.output(1,self.display())
+        self.display_merge()
         opt = self._play()
         self.travel(opt,player)
 
         self.play(player)        
     def _play(self):
+        
         while True:
             try:
                 opt = int(input('what do you do? :'))
                 clear()
                 return opt
+
+            except KeyboardInterrupt:
+                clear()
+                sys.exit()
             except:
                 print("only a number please")
-   
+    def output(self,display, text):
+        self.displays[display]=self.displays[display]+text;
+    def clear_output(self,display=None,every=False):
+        if every:
+            for i,x in enumerate(self.displays):
+                self.displays[i]=""
+        elif display:
+            self.displays[display]=""
+        clear()
+    def display_merge(self):
+        dw = self.display_width
+        box_of_lines = [x.split("\n") for x in self.displays]
+
+        ld = max([len(x) for x in box_of_lines])
+        for i in range(ld):
+            s=""
+            for d in box_of_lines:
+                try:
+                    s=s+pad(d[i],self.display_width)
+                except:
+                    s=s+pad("",self.display_width)
+            print(s)
+def pad(line,leng):
+    l = len(line)
+    d = leng-l;
+    s = " "
+    for x in range(d):
+        line=line+s
+    line=line+"||"
+    return line

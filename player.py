@@ -45,11 +45,21 @@ class Player:
         for x in self.inventory:
             if x.name == item_name:
                 return x
-    def display(self):
+    def display(self,w):
         v = vars(self)
         v = [{x,y} for (x,y) in v.items() if not x =="inventory"]
-        print(v)
-        print("inventory:")
+        lines=[]
+        st=""
+        for x in v:
+            st=st+str(x)
+            if(len(st)>w*3/5):
+                lines.append(st)
+                st=""
+        lines.append(st)
+        lines.append("inventory:")
+        for x in lines:
+            st = st+x+"\n"
         for x in self.inventory:
-           print(x.name)
-        print("\n\n")
+           st=st+"\n"+x.name
+        st=st+"\n\n"
+        return st
