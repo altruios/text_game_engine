@@ -8,30 +8,29 @@ def sword_check(player=None):
 
 # walk functions - what happens when you walk a path
 def edge0fn(player=None,display=None):
-    display=display+"you wake up - only remembering the things you learned before\n"
+    display(1,"you wake up - only remembering the things you learned before\n")
     player.health=100;
     player.respawn=player.respawn+1;
 
 
 def edge1fn(player=None,swung_sword=False,display=None):
     if not swung_sword:
-        display=display+"you run and stumble on the ground, the dog chases you"
+        display(1,"you run and stumble on the ground, the monster chases you\n")
         player.health=player.health-50;
 
 def edge2fn(player=None,display=None):
-    display=display+"you walk down the street and the dog loses interest in you"
+    display(1,"you walk down the street and the monster loses interest in you\n")
     if(sword_check(player)):
-        print("you stumble on the ground")
+        display(1,"you stumble on the ground\n",add=True)
         player.health=player.health-10
-        print("you find a sword: do you take it?")
+        display(0,"-10 health",add=True)
+        display(1,"you find a sword: do you take it?\n",add=True)
         opt = input("yes / no ? : ")
         if(opt == "y" or opt=="yes"):
             sword = get_item("sword")
             player.add_to_inventory(sword)
-        display=display+"you get up and get to your front door\n"
-    else:
-        display=display+"you get up and get to your front door\n"
-
+    display(1,"you get up and get to your front door\n",add=True)
+    
 def e2hifn(player=None,display=None):
     if player:
         return player.respawn==0;
@@ -39,7 +38,7 @@ def e2hifn(player=None,display=None):
 def edge3fn(player=None,display=None):
     if player:
         player.use("sword")
-        print("the dog was killed")
+        display(0,"the monster was killed\n")
 
 _scene_edges = []
 _scene_edges.append(SceneEdge("try again", edge0fn, False, 0, 1))

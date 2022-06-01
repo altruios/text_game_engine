@@ -48,11 +48,11 @@ class SceneGraph:
         except:
             vnid = 0
         try:
-            self.visible_edges[option].travel(player,display=self.displays[1])
+            self.visible_edges[option].travel(player,display=self.update_display)
         except:
             #there are no possible answers:
             self.visible_edges.append(self.edges[0])
-            self.visible_edges[0].travel(player,display=self.displays[1])
+            self.visible_edges[0].travel(player,display=self.update_display)
         self.set_visible_node(vnid)
         self.set_visible_edges(player)
     def set_visible_node(self,id):
@@ -63,14 +63,19 @@ class SceneGraph:
     def display(self):
         s="";
         s=s+(self.visible_node.text);
+        s=s+"\n\n"
         for i,x in enumerate(self.visible_edges):
             s=s+(f'\n{i}: {x.text}')
         return s
     def play(self,player):
-        self.clear_output(every=True)
-        self.output(0,player.display(self.display_width))
-        self.output(1,self.display())
-        self.display_merge()
+        self.update_display(
+            0,
+            text_data=[
+                player.display(self.display_width),
+                self.display()
+            ],
+            rewrite=True
+        )
         opt = self._play()
         self.travel(opt,player)
 
@@ -97,11 +102,31 @@ class SceneGraph:
         elif display:
             self.displays[display]=""
         clear()
+    def update_display(self,screen,text_data,add=False,rewrite=False):
+
+        t1=self.displays[0]
+        t2=self.displays[1]
+        if rewrite:
+            self.clear_output(every=True)
+            self.output(0,text_data[0])
+            self.output(1,text_data[1])
+        elif add:
+            clear()
+            self.displays[screen]=self.displays[screen]+text_data
+        else:
+            clear()
+            self.displays[screen]=text_data
+        self.display_merge()
     def display_merge(self):
         dw = self.display_width
         box_of_lines = [x.split("\n") for x in self.displays]
 
         ld = max([len(x) for x in box_of_lines])
+        option_count = len(self.visible_edges)
+        while len(box_of_lines[1])<ld:
+            box_of_lines[1].insert(len(box_of_lines)-(option_count-1),"")
+
+
         for i in range(ld):
             s=""
             for d in box_of_lines:

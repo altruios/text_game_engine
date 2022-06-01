@@ -46,13 +46,15 @@ class Player:
             if x.name == item_name:
                 return x
     def display(self,w):
+        if not w:
+            w=self.__screen_width
         v = vars(self)
         v = [{x,y} for (x,y) in v.items() if not x =="inventory"]
         lines=[]
         st=""
-        for x in v:
+        for i,x in enumerate(v):
             st=st+str(x)
-            if(len(st)>w*3/5):
+            if(i%4==0):
                 lines.append(st)
                 st=""
         lines.append(st)
