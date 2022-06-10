@@ -9,4 +9,4 @@ class Item:
         if self.quantity==0:
             del self
     def use(self,target):
-        self.effect()
+        self.effect(target)

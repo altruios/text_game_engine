@@ -140,6 +140,12 @@ def pad(line,leng):
     d = leng-l;
     s = " "
     for x in range(d):
-        line=line+s
-    line=line+"||"
+        if x%2==0:
+            line=line+s
+        else:
+            line=s+line
+    
+    line=line+"<"
+    line=">"+line
+
     return line

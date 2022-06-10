@@ -2,6 +2,7 @@ from scene import *
 import item
 from scene_edges_list import _scene_edges
 from scene_list import _scene_list
+from world import World
 print("worldstate");
 Sg = SceneGraph()
 for x in _scene_list:
@@ -14,3 +15,4 @@ Sg.set_visible_edges()
 
 
 
+Ws = World(Sg)

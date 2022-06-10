@@ -45,6 +45,7 @@ class Player:
         for x in self.inventory:
             if x.name == item_name:
                 return x
+        return None
     def display(self,w):
         if not w:
             w=self.__screen_width
